@@ -4,21 +4,23 @@
 
 ## 状態
 
-- 目標本番URL：`https://hijikilabo.com/`（GitHubに登録済み、Enforce HTTPS有効。DNS応答の収束と外部HTTPS表示は未確認）
+- 本番URL：`https://hijikilabo.com/`（外部ネットワークからHTTP 200・TLS検証成功、Enforce HTTPS有効）
 - GitHubアカウント：`hijikiogan-sudo`（接続済みGitHubツールで確認）
 - 専用リポジトリ：`https://github.com/hijikiogan-sudo/hijikilabo-site`（新規publicリポジトリを作成済み）
 - 初回暫定URL：`https://hijikiogan-sudo.github.io/hijikilabo-site/`（初回外部表示確認済み。Custom domain登録後は独自ドメインへの接続を利用）
 - GitHub Pages：公開元GitHub Actions。独自ドメイン用の `base_path: /` で再公開成功
-- DNS：所有者の明示承認後、所有者がWeb用A4件とwwwのCNAME1件を追加。管理画面画像で5件を確認。外部への反映は確認中
+- DNS：所有者の明示承認後、所有者がWeb用A4件とwwwのCNAME1件を追加。管理画面画像と権威DNS3台で確認済み。一部の端末・回線で古いキャッシュが残る可能性があります
 - メール：既存のMX・SPF・DKIM・DMARCとNSの値が公開DNS上で変更前と一致。実送受信テストは未実施
 
 制作依頼の基準日：2026年11月15日。管理画面の一覧全体（NS3件、SOA、MX、SPF、DKIM、DMARCの8件）を所有者の画像で確認し、公開DNS値の控えと照合済みです。A/AAAA/wwwがない初期状態から、承認されたWeb用5件だけを追加しました。ネームサーバーと既存メール設定は変更していません。変更前後の控えは公開リポジトリの外に保存しています。
 
 初回配信ソースcommit：`4cdedfa7126dfc7de1700e9fdc6b37e857fccad3`。初回ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43692897614`（success）。暫定URLのトップ・プライバシーを外部から取得し、深い階層のカスタム404、CSS、トップへの復帰とプライバシーへの遷移も確認済みです。
 
-独自ドメイン登録後の配信ソースcommit：`2a31de4e3378a947f427779f18628fe18ababff4`。ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43694708494`（success、base `/`）。Custom domainは `hijikilabo.com`。GitHubの公式案内に沿う証明書発行処理の再試行後、Enforce HTTPSを有効化し、画面を再読み込みして保存を確認済みです。ただしGitHubのDNSチェックはまだ警告が残り、ユーザーのブラウザでも `ERR_NAME_NOT_RESOLVED` が出ています。独自ドメインのHTTPS表示・証明書の実接続・www/HTTPリダイレクトは完了扱いにしていません。
+独自ドメイン登録後の配信ソースcommit：`2a31de4e3378a947f427779f18628fe18ababff4`。ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43694708494`（success、base `/`）。Custom domainは `hijikilabo.com`。GitHub公式の証明書更新手順を実施し、Enforce HTTPSの保存とDNSチェック成功を確認済みです。
 
-外部DNSでは、A4件とwwwの正しいCNAMEが返る応答を取得しました。一方で、別の照会では変更前の否定応答やA1件だけの応答が残っています。管理画面に追加された5件の値は正しく、応答の収束を待って再検証する段階です。古い応答が残っていることを理由に、DNSレコードの追加をやり直したり既存のメール用レコードを削除したりしないでください。
+外部のGitHub Actions実行環境から、権威DNS3台すべてがA4件とwwwの正しいCNAMEを返すことを確認。最終検証 `https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43698844889` の実ログでは、トップ・プライバシーがHTTP 200、カスタム404がHTTP 404、HTTP→HTTPSとwww→正規ドメインが301後に200でした。通常DNS経由とPagesの各IPv4への接続で、apex/www双方のTLS検証も成功しました。証明書のSANは両方のホスト名を含み、有効期限は2027年2月13日08:21:03 UTC（17:21:03 JST）です。証明書はホスティング側で更新されるため、将来の有効期限は再確認してください。
+
+所有者の端末では `ERR_NAME_NOT_RESOLVED` が残るとの報告があり、その回線での表示は別途確認が必要です。外部の正常な接続確認と区別して記録しています。古いDNS応答が残っていることを理由に、登録をやり直したり既存のメール用レコードを削除したりしないでください。
 
 ## ファイル
 
@@ -33,6 +35,8 @@
 | `.nojekyll` | Jekyll処理を行わない指定 |
 | `scripts/build.py` | 公開対象だけを `dist/` に出力 |
 | `.github/workflows/pages.yml` | 手動実行のGitHub Pages公開ワークフロー |
+| `scripts/check_domain.py` | DNS・HTTP・TLSの読み取り専用診断 |
+| `.github/workflows/check-domain.yml` | 手動実行の接続診断ワークフロー |
 
 ## ローカルで確認
 
@@ -117,6 +121,8 @@ NSは `ns1.xdomain.ne.jp.` / `ns2.xdomain.ne.jp.` / `ns3.xdomain.ne.jp.`。MXは
 
 ## 更新と復旧
 
+接続の再確認は `Actions > Check website connection (manual) > Run workflow` から実行できます。公開やDNS変更は行わず、権威DNSの応答、HTTPステータス・遷移先、TLSのホスト名検証・証明書情報をログに出力します。ジョブの完了表示だけでなく、各診断の `exit_code`・`http_code`・`ssl_verify_result` 等を確認してください。
+
 制作時のローカル検証では、Chromiumで幅320・375・390・640・768・1024・1440pxの3ページ、計21条件を確認。横方向のはみ出しはなく、axeのWCAG 2 A/AA・2.1 AA対象自動検査の指摘は0件でした。リンク、本文スキップのフォーカス移動、動きを減らす設定も確認済みです。通常閲覧で外部リクエスト、Cookie、localStorage/sessionStorageへの保存は観測されませんでした。自動検査はアクセシビリティ全体や実機・本番動作を保証するものではありません。
 
 HTML/CSSを編集し、ローカルでPC・スマートフォン幅、メールリンク、ページ間リンク、キーボード、文字コントラストを確認してからcommit/pushし、手動ワークフローを実行します。製品紹介は作品ごとに所有者が掲載を承認した後にだけ追加します。
@@ -127,7 +133,7 @@ HTML/CSSを編集し、ローカルでPC・スマートフォン幅、メール�
 
 - 所有者による掲載文、プライバシーポリシーの運用適合性・保持期間の確認。
 - GitHub Pagesで配信することと、GitHubのプライバシー声明へのリンクを本文に記載済み。未確認のログ保持日数や配信サービス全体のCookieの不存在は断定していません。
-- 本番DNS、HTTPS、www挙動、外部プレビューとメール実送受信の検証。
+- 本番DNS・HTTPS・www/HTTP遷移は外部環境で検証済み。所有者の端末・回線での表示確認と、メール実送受信は未完了。
 - 実機iPhoneのSafariでの確認（開発環境ではChromiumによる画面幅の検証）。
 
 Appleへの移行開始を依頼する前に、①2ファクタ認証が有効か、②受取銀行口座を変更する必要がないか／変更するなら完了したか、必ず確認してください。サイト公開だけで組織登録の承認が保証されるものではありません。
