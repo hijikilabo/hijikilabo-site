@@ -4,17 +4,19 @@
 
 ## 状態
 
-- 目標本番URL：`https://hijikilabo.com/`（公開・接続・証明書は未確認）
+- 目標本番URL：`https://hijikilabo.com/`（GitHubに登録済み。DNS反映とTLS証明書発行の確認中）
 - GitHubアカウント：`hijikiogan-sudo`（接続済みGitHubツールで確認）
 - 専用リポジトリ：`https://github.com/hijikiogan-sudo/hijikilabo-site`（新規publicリポジトリを作成済み）
-- 暫定公開URL：`https://hijikiogan-sudo.github.io/hijikilabo-site/`（外部表示確認済み）
-- GitHub Pages：GitHub Actionsを公開元として設定し、初回デプロイ成功
-- DNS／ドメイン設定：変更なし。公開DNS照会でXServer系NS、メール用MX・SPF・DMARCを確認。管理画面の全レコードは未確認
-- メール：設定変更なし。今回の作業での実送受信テストは未実施
+- 初回暫定URL：`https://hijikiogan-sudo.github.io/hijikilabo-site/`（初回外部表示確認済み。Custom domain登録後は独自ドメインへの接続を利用）
+- GitHub Pages：公開元GitHub Actions。独自ドメイン用の `base_path: /` で再公開成功
+- DNS：所有者の明示承認後、所有者がWeb用A4件とwwwのCNAME1件を追加。管理画面画像で5件を確認。外部への反映は確認中
+- メール：既存のMX・SPF・DKIM・DMARCとNSの値が公開DNS上で変更前と一致。実送受信テストは未実施
 
-制作依頼の基準日：2026年11月15日。開発環境からの外部通信には制限がありますが、後続の外部取得経路から公開DNSを照会できました。照会時点でルートのA/AAAAには回答がなく、wwwはNXDOMAINでした。Webページ取得も失敗しており、本番HTTPS表示は確認できていません。本人のブラウザ認証後、公式サイト専用の新規リポジトリを作成済みです。公開後は、この状態欄を実測結果に更新してください。
+制作依頼の基準日：2026年11月15日。管理画面の一覧全体（NS3件、SOA、MX、SPF、DKIM、DMARCの8件）を所有者の画像で確認し、公開DNS値の控えと照合済みです。A/AAAA/wwwがない初期状態から、承認されたWeb用5件だけを追加しました。ネームサーバーと既存メール設定は変更していません。変更前後の控えは公開リポジトリの外に保存しています。
 
-初回配信ソースcommit：`4cdedfa7126dfc7de1700e9fdc6b37e857fccad3`。公開ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43692897614`（success）。暫定URLのトップ・プライバシーを外部から取得し、深い階層のカスタム404の表示、CSS読み込み、トップへ戻るリンク、プライバシーへの遷移も外部ブラウザで確認済みです。Custom domainは未設定。DNS・メール・ネームサーバーは変更していません。
+初回配信ソースcommit：`4cdedfa7126dfc7de1700e9fdc6b37e857fccad3`。初回ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43692897614`（success）。暫定URLのトップ・プライバシーを外部から取得し、深い階層のカスタム404、CSS、トップへの復帰とプライバシーへの遷移も確認済みです。
+
+独自ドメイン登録後の配信ソースcommit：`2a31de4e3378a947f427779f18628fe18ababff4`。ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43694708494`（success、base `/`）。Custom domainは `hijikilabo.com`。直近のGitHub確認ではDNSチェックが未完了で証明書の発行処理が再開中、Enforce HTTPSは選択不可でした。ドメインのHTTPS表示、wwwリダイレクト、Enforce HTTPSは完了扱いにしていません。
 
 ## ファイル
 
@@ -73,21 +75,21 @@ gh workflow run pages.yml --repo hijikiogan-sudo/hijikilabo-site -f base_path=/h
 
 SEOのcanonicalとOGPは最終ドメイン `https://hijikilabo.com/` を指しています。暫定URLでリンク先は動作しますが、OGP画像の外部取得・検索向けの検証完了は独自ドメイン接続後です。
 
-## DNSと独自ドメイン：現時点では適用禁止
+## DNSと独自ドメイン：承認済みの変更記録
 
-GitHub公式資料のソースを取得してPages用の候補値を確認済みです。**現行DNSのバックアップと差分の承認がまだないため、以下は変更指示ではありません。**
+GitHub公式資料を確認し、既存値の控えを保存して差分を提示した後、所有者の「進めて」という明示承認を受けました。以下のWeb用5件だけを所有者が追加し、追加後の管理画面画像を確認済みです。**既存8件の編集・削除は行っていません。**
 
-| 対象 | 現在値 | GitHub Pages接続時の候補 |
+| 対象 | 変更前 | 承認・追加された値 |
 | --- | --- | --- |
-| `@` A | 公開DNS照会はNOERROR、Answerなし | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
-| `@` AAAA | 公開DNS照会はNOERROR、Answerなし | IPv6を追加するかは承認時に確定。採用時は `2606:50c0:8000::153` ～ `2606:50c0:8003::153` |
-| `www` CNAME等 | 公開DNS照会はNXDOMAIN（A/AAAA/CNAME） | `hijikiogan-sudo.github.io.` へのCNAME（リポジトリ名は付けない） |
-| MX・TXT・SPF・DMARC・NS | 公開DNS応答を別途保存済み | 既存の値を維持。変更対象に含めない |
-| DKIM | セレクタ・レコード未確認 | 管理画面等で確認し、既存値を維持 |
+| `@` A | 未登録、公開DNSでAnswerなし | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`（各TTL 3600） |
+| `www` CNAME | 未登録、公開DNSでNXDOMAIN | `hijikiogan-sudo.github.io`（TTL 3600） |
+| `@` AAAA | 未登録 | 追加・変更なし |
+| MX・SPF・DMARC・NS | 管理画面と公開DNSで確認・保存済み | 値を維持。変更後の公開応答でも一致 |
+| DKIM TXT | `rs20261101._domainkey.hijikilabo.com` | 公開鍵を含め既存値と一致。変更なし |
 
-観測されたNSは `ns1.xdomain.ne.jp.` / `ns2.xdomain.ne.jp.` / `ns3.xdomain.ne.jp.`。MXはWebのルート名ではなく外部のメール用ホストを参照し、そのホストのA応答とSPFのa機構の参照先も確認しました。DNSの参照関係と公開応答を確認した段階であり、管理画面のゾーン全体のバックアップ・送受信テストの代わりにはなりません。生の調査資料は公開リポジトリの外に保管しています。
+NSは `ns1.xdomain.ne.jp.` / `ns2.xdomain.ne.jp.` / `ns3.xdomain.ne.jp.`。MXはWebのルート名とは別の外部ホストを参照し、そのA応答とSPFのa機構の参照先も確認しました。管理画面の設定TTL 3600と公開リゾルバーの残存TTLは区別して記録しています。DNS値の維持確認はメールの実送受信テストの代わりにはなりません。生の控えは公開リポジトリの外に保管しています。
 
-メールサーバー名やMXの参照先がWeb用A/AAAAと共用されていないかも確認します。ルートのAを変更するとメールに影響する構成もあるため、MX/TXTをそのまま残すだけでは安全の確認になりません。DKIMセレクタは推測せず、管理画面または有効なメールヘッダーから確認します。公開DNS照会だけでは全レコードのバックアップにはなりません。
+今回の追加5件以外のDNS変更は改めて差分を提示し、所有者の承認を得てから行います。ドメイン所有権検証用TXTはまだ追加していません。
 
 承認前に：
 
