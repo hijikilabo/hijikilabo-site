@@ -1,0 +1,45 @@
+name: Publish website (manual)
+on:
+  workflow_dispatch:
+    inputs:
+      base_path:
+        description: "Use /hijikilabo-site/ for temporary Pages; / after approved custom-domain setup"
+        required: true
+        default: /hijikilabo-site/
+        type: choice
+        options:
+          - /hijikilabo-site/
+          - /
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build public files only
+        env:
+          SITE_BASE_PATH: ${{ inputs.base_path }}
+        run: python3 scripts/build.py --base "$SITE_BASE_PATH"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
