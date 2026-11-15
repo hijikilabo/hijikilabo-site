@@ -33,6 +33,7 @@
 | `404.html` | 存在しないURLからの復帰ページ |
 | `assets/css/style.css` | レスポンシブ表示・フォーカス・動きを減らす設定 |
 | `assets/og.png` | 当サイト向けに作成したブランド共有画像 |
+| `assets/hero-layers-03a.webp` | 丁寧な積み重ねが自然になじむことを表す、ヒーロー用の抽象造形（生成画像をWebP形式で最適化） |
 | `favicon.svg` | 当サイト向けに作成したアイコン |
 | `.nojekyll` | Jekyll処理を行わない指定 |
 | `scripts/build.py` | 公開対象だけを `dist/` に出力 |

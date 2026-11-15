@@ -187,92 +187,19 @@ h3 {
 }
 .hero-art {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 390px;
   align-self: center;
   margin-top: -38px;
-  background: radial-gradient(
-    ellipse at center,
-    #e7eddf 0%,
-    #f1f4ec 46%,
-    transparent 72%
-  );
-  overflow: hidden;
 }
-.art-grid {
-  position: absolute;
-  inset: 25px;
-  background-image:
-    linear-gradient(#536d4420 1px, transparent 1px),
-    linear-gradient(90deg, #536d4420 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: radial-gradient(ellipse, #000, transparent 69%);
-}
-.orbit {
-  position: absolute;
-  border: 1px solid #aebda6;
-  border-radius: 50%;
-  width: 280px;
-  height: 280px;
-  top: 44px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.orbit-two {
-  width: 204px;
-  height: 204px;
-  top: 82px;
-  border-color: #b3c0a9;
-}
-.art-core {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Georgia, serif;
-  font-size: 114px;
-  letter-spacing: -0.075em;
-  padding-bottom: 32px;
-  color: #4c6542;
-}
-.art-core span {
-  color: #7e906b;
-}
-.art-dot {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #708360;
-}
-.dot-one {
-  top: 89px;
-  left: calc(50% + 95px);
-}
-.dot-two {
-  top: 282px;
-  left: calc(50% - 102px);
-  width: 8px;
-  height: 8px;
-  background: #a3b298;
-}
-.art-label {
-  position: absolute;
-  bottom: 52px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  color: var(--green);
-}
-.art-index {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  font-size: 8px;
-  letter-spacing: 0.16em;
-  color: var(--muted);
+.hero-layers {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
 }
 .hero-bottom {
   grid-column: 1/-1;
@@ -581,32 +508,6 @@ dd a {
   .hero-art {
     height: 330px;
   }
-  .orbit {
-    width: 230px;
-    height: 230px;
-    top: 35px;
-  }
-  .orbit-two {
-    width: 168px;
-    height: 168px;
-    top: 66px;
-  }
-  .art-core {
-    font-size: 95px;
-    padding-bottom: 29px;
-  }
-  .dot-one {
-    top: 73px;
-    left: calc(50% + 78px);
-  }
-  .dot-two {
-    top: 229px;
-    left: calc(50% - 85px);
-  }
-  .art-label {
-    bottom: 40px;
-    font-size: 8px;
-  }
   .section {
     grid-template-columns: 1fr 3fr;
     gap: 25px;
@@ -704,45 +605,11 @@ dd a {
     gap: 55px;
   }
   .hero-art {
-    height: 245px;
+    height: 200px;
     width: 100%;
     max-width: 340px;
     justify-self: center;
     margin: 25px 0 16px;
-  }
-  .orbit {
-    width: 188px;
-    height: 188px;
-    top: 10px;
-  }
-  .orbit-two {
-    width: 136px;
-    height: 136px;
-    top: 36px;
-  }
-  .art-core {
-    font-size: 83px;
-    padding-bottom: 38px;
-  }
-  .dot-one {
-    top: 40px;
-    left: calc(50% + 64px);
-    width: 9px;
-    height: 9px;
-  }
-  .dot-two {
-    top: 172px;
-    left: calc(50% - 69px);
-    width: 6px;
-    height: 6px;
-  }
-  .art-label {
-    bottom: 21px;
-  }
-  .art-index {
-    top: 1px;
-    right: 0;
-    font-size: 7px;
   }
   .hero-bottom {
     font-size: 8px;
