@@ -7,12 +7,14 @@
 - 目標本番URL：`https://hijikilabo.com/`（公開・接続・証明書は未確認）
 - GitHubアカウント：`hijikiogan-sudo`（接続済みGitHubツールで確認）
 - 専用リポジトリ：`https://github.com/hijikiogan-sudo/hijikilabo-site`（新規publicリポジトリを作成済み）
-- 外部プレビューURL：未発行
-- GitHub Pages：設定・デプロイ未実施
+- 暫定公開URL：`https://hijikiogan-sudo.github.io/hijikilabo-site/`（外部表示確認済み）
+- GitHub Pages：GitHub Actionsを公開元として設定し、初回デプロイ成功
 - DNS／ドメイン設定：変更なし。公開DNS照会でXServer系NS、メール用MX・SPF・DMARCを確認。管理画面の全レコードは未確認
 - メール：設定変更なし。今回の作業での実送受信テストは未実施
 
 制作依頼の基準日：2026年11月15日。開発環境からの外部通信には制限がありますが、後続の外部取得経路から公開DNSを照会できました。照会時点でルートのA/AAAAには回答がなく、wwwはNXDOMAINでした。Webページ取得も失敗しており、本番HTTPS表示は確認できていません。本人のブラウザ認証後、公式サイト専用の新規リポジトリを作成済みです。公開後は、この状態欄を実測結果に更新してください。
+
+初回配信ソースcommit：`4cdedfa7126dfc7de1700e9fdc6b37e857fccad3`。公開ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43692897614`（success）。暫定URLのトップ・プライバシーを外部から取得し、深い階層のカスタム404の表示、CSS読み込み、トップへ戻るリンク、プライバシーへの遷移も外部ブラウザで確認済みです。Custom domainは未設定。DNS・メール・ネームサーバーは変更していません。
 
 ## ファイル
 
