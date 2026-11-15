@@ -4,7 +4,7 @@
 
 ## 状態
 
-- 目標本番URL：`https://hijikilabo.com/`（GitHubに登録済み。DNS反映とTLS証明書発行の確認中）
+- 目標本番URL：`https://hijikilabo.com/`（GitHubに登録済み、Enforce HTTPS有効。DNS応答の収束と外部HTTPS表示は未確認）
 - GitHubアカウント：`hijikiogan-sudo`（接続済みGitHubツールで確認）
 - 専用リポジトリ：`https://github.com/hijikiogan-sudo/hijikilabo-site`（新規publicリポジトリを作成済み）
 - 初回暫定URL：`https://hijikiogan-sudo.github.io/hijikilabo-site/`（初回外部表示確認済み。Custom domain登録後は独自ドメインへの接続を利用）
@@ -16,7 +16,9 @@
 
 初回配信ソースcommit：`4cdedfa7126dfc7de1700e9fdc6b37e857fccad3`。初回ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43692897614`（success）。暫定URLのトップ・プライバシーを外部から取得し、深い階層のカスタム404、CSS、トップへの復帰とプライバシーへの遷移も確認済みです。
 
-独自ドメイン登録後の配信ソースcommit：`2a31de4e3378a947f427779f18628fe18ababff4`。ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43694708494`（success、base `/`）。Custom domainは `hijikilabo.com`。直近のGitHub確認ではDNSチェックが未完了で証明書の発行処理が再開中、Enforce HTTPSは選択不可でした。ドメインのHTTPS表示、wwwリダイレクト、Enforce HTTPSは完了扱いにしていません。
+独自ドメイン登録後の配信ソースcommit：`2a31de4e3378a947f427779f18628fe18ababff4`。ワークフロー：`https://github.com/hijikiogan-sudo/hijikilabo-site/actions/runs/43694708494`（success、base `/`）。Custom domainは `hijikilabo.com`。GitHubの公式案内に沿う証明書発行処理の再試行後、Enforce HTTPSを有効化し、画面を再読み込みして保存を確認済みです。ただしGitHubのDNSチェックはまだ警告が残り、ユーザーのブラウザでも `ERR_NAME_NOT_RESOLVED` が出ています。独自ドメインのHTTPS表示・証明書の実接続・www/HTTPリダイレクトは完了扱いにしていません。
+
+外部DNSでは、A4件とwwwの正しいCNAMEが返る応答を取得しました。一方で、別の照会では変更前の否定応答やA1件だけの応答が残っています。管理画面に追加された5件の値は正しく、応答の収束を待って再検証する段階です。古い応答が残っていることを理由に、DNSレコードの追加をやり直したり既存のメール用レコードを削除したりしないでください。
 
 ## ファイル
 
