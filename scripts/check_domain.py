@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+from urllib.parse import urlsplit
 
 DOMAIN = "hijikilabo.com"
 PAGES_IPS = [f"185.199.{part}.153" for part in (108, 109, 110, 111)]
@@ -33,7 +34,7 @@ def http_probe(url, ip=None):
                 "--dump-header", str(headers), "--output", str(body), "--write-out", "%{json}"]
         if ip:
             # Connect to a documented Pages IP while preserving hostname and TLS verification.
-            args += ["--resolve", f"{DOMAIN}:443:{ip}"]
+            args += ["--resolve", f"{urlsplit(url).hostname}:443:{ip}"]
         args += [url]
         response = command(args)
         raw = response.pop("stdout", "")
@@ -52,14 +53,14 @@ def http_probe(url, ip=None):
         return {"kind": "http", "url": url, "direct_pages_ip": ip, **response}
 
 
-def certificate_probe():
-    result = command(["openssl", "s_client", "-connect", f"{DOMAIN}:443", "-servername", DOMAIN,
-                      "-verify_hostname", DOMAIN, "-verify_return_error", "-showcerts"], stdin="")
+def certificate_probe(host):
+    result = command(["openssl", "s_client", "-connect", f"{host}:443", "-servername", host,
+                      "-verify_hostname", host, "-verify_return_error", "-showcerts"], stdin="")
     output = result.get("stdout", "")
     match = re.search(r"-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----", output, re.S)
     summary = command(["openssl", "x509", "-noout", "-subject", "-issuer", "-dates", "-ext",
                        "subjectAltName"], stdin=match.group(0)) if match else None
-    return {"kind": "certificate", "handshake_exit_code": result.get("exit_code"),
+    return {"kind": "certificate", "host": host, "handshake_exit_code": result.get("exit_code"),
             "handshake_error": result.get("stderr", result.get("error")), "certificate": summary}
 
 
@@ -84,11 +85,12 @@ def main():
     probes = [(f"https://{DOMAIN}/", None), (f"http://{DOMAIN}/", None),
               (f"https://www.{DOMAIN}/", None), (f"https://{DOMAIN}/privacy.html", None),
               (f"https://{DOMAIN}/missing/deep-page", None)]
-    probes += [(f"https://{DOMAIN}/", ip) for ip in PAGES_IPS]
+    probes += [(f"https://{host}/", ip) for host in (DOMAIN, "www." + DOMAIN) for ip in PAGES_IPS]
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for result in executor.map(lambda pair: http_probe(*pair), probes):
             print(json.dumps(result, ensure_ascii=False), flush=True)
-    print(json.dumps(certificate_probe(), ensure_ascii=False), flush=True)
+    for host in (DOMAIN, "www." + DOMAIN):
+        print(json.dumps(certificate_probe(host), ensure_ascii=False), flush=True)
 
 
 if __name__ == "__main__":
