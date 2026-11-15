@@ -404,13 +404,23 @@ dd a {
   padding-bottom: 0;
 }
 .principles article > span {
-  font-size: 10px;
-  color: var(--muted);
-  padding-top: 6px;
+  display: inline-flex;
+  flex: 0 0 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--wash);
+  color: var(--green);
+  font-size: 23px;
+  line-height: 1;
+  letter-spacing: 0;
 }
 .principles h3 {
   font-size: 17px;
   margin-bottom: 9px;
+  text-wrap: balance;
 }
 .principles p {
   color: var(--muted);
@@ -822,6 +832,11 @@ dd a {
   .principles article {
     gap: 17px;
     padding: 22px 0;
+  }
+  .principles article > span {
+    flex-basis: 36px;
+    height: 36px;
+    font-size: 21px;
   }
   .principles h3 {
     font-size: 16px;
