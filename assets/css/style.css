@@ -5,7 +5,6 @@
   --muted: #58685e;
   --green: #466451;
   --line: #d6ded3;
-  --wash: #eef2e9;
   --max: 1120px;
   font-family:
     -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
@@ -136,15 +135,27 @@ h3 {
 .site-header nav span {
   margin-left: 10px;
 }
+.hero h1,
+.about h2,
+.activities h2,
+.activity-list h3,
+.approach h2,
+.principles article > span,
+.contact h2 {
+  font-family:
+    "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif",
+    "MS PMincho", serif;
+  font-weight: 400;
+}
 .hero {
   position: relative;
   padding-top: 85px;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 30px;
 }
 .hero-copy {
-  padding-bottom: 85px;
+  padding-bottom: 32px;
   position: relative;
   z-index: 1;
 }
@@ -160,17 +171,14 @@ h3 {
   background: #6c805b;
 }
 .hero h1 {
-  font-size: clamp(38px, 4.9vw, 62px);
-  letter-spacing: 0.055em;
-  line-height: 1.55;
-  margin: 30px 0 23px;
-  font-weight: 500;
+  font-size: clamp(36px, 4.1vw, 56px);
+  letter-spacing: 0.075em;
+  line-height: 1.52;
+  margin: 34px 0 30px;
   white-space: nowrap;
 }
-.period {
-  color: #6d805e;
-}
 .hero-description {
+  max-inline-size: 31em;
   font-size: 14px;
   line-height: 2.15;
   color: var(--muted);
@@ -193,9 +201,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 390px;
   align-self: center;
-  margin-top: -38px;
 }
 .hero-layers {
   display: block;
@@ -217,8 +223,8 @@ h3 {
   padding-top: 104px;
   padding-bottom: 104px;
   display: grid;
-  grid-template-columns: 1fr 2.2fr;
-  gap: 40px;
+  grid-template-columns: 20% minmax(0, 1fr);
+  gap: 32px;
 }
 .section-label {
   padding-top: 13px;
@@ -234,7 +240,7 @@ h3 {
   font-size: 10px;
 }
 .prose {
-  max-width: 625px;
+  max-width: 42em;
   margin-top: 28px;
   color: var(--muted);
   font-size: 14px;
@@ -243,14 +249,15 @@ h3 {
   margin-top: 16px;
 }
 .business-info {
-  margin: 38px 0 0;
-  font-size: 12px;
+  max-width: 780px;
+  margin: 36px 0 0;
+  font-size: 13px;
 }
 .business-info > div {
   display: grid;
-  grid-template-columns: 105px 1fr;
+  grid-template-columns: 128px minmax(0, 1fr);
   gap: 16px;
-  padding: 14px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--line);
 }
 .business-info > div:first-child {
@@ -266,20 +273,19 @@ dd {
 dd a {
   text-decoration: none;
 }
-.activities {
-  background: var(--wash);
-  padding: 85px 0 92px;
+.activities > .wrap {
+  border-top: 1px solid var(--line);
+  padding-block: 96px 100px;
 }
 .section-heading {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 64px;
 }
 .section-heading h2 {
-  font-size: 29px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 .section-heading > p {
   font-size: 12px;
@@ -291,10 +297,8 @@ dd a {
   gap: 38px;
 }
 .activity-list article {
-  position: relative;
-  padding-top: 21px;
-  border-top: 1px solid #bdc9b6;
-  padding-bottom: 42px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
 }
 .activity-number {
   font-size: 9px;
@@ -302,19 +306,13 @@ dd a {
   color: var(--muted);
 }
 .activity-list h3 {
-  margin: 24px 0 16px;
+  font-size: 23px;
+  margin: 22px 0 14px;
 }
 .activity-list p {
   font-size: 13px;
   color: var(--muted);
   line-height: 2.05;
-}
-.activity-mark {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: 23px;
-  color: var(--green);
 }
 .section-intro {
   margin-top: 25px;
@@ -370,35 +368,30 @@ dd a {
   font-size: 12px;
 }
 .principles {
-  margin-top: 34px;
+  margin-top: 32px;
+  border-bottom: 1px solid var(--line);
 }
 .principles article {
-  display: flex;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: baseline;
   gap: 24px;
   border-top: 1px solid var(--line);
-  padding: 26px 0;
+  padding-block: 24px;
 }
-.principles article:last-child {
-  padding-bottom: 0;
+.principles article > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  align-items: baseline;
+  gap: 18px;
 }
 .principles article > span {
-  display: inline-flex;
-  flex: 0 0 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--wash);
   color: var(--green);
-  font-size: 23px;
-  line-height: 1;
-  letter-spacing: 0;
+  font-size: 26px;
+  line-height: 1.2;
 }
 .principles h3 {
-  font-size: 17px;
-  margin-bottom: 9px;
-  text-wrap: balance;
+  font-size: 15px;
 }
 .principles p {
   color: var(--muted);
@@ -406,17 +399,15 @@ dd a {
   max-width: 580px;
 }
 .contact {
-  background: #e9eee3;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  background: #eff1eb;
+  border-block: 1px solid var(--line);
 }
 .contact-inner {
   text-align: center;
-  padding: 70px 0 68px;
+  padding-block: 84px 76px;
 }
 .contact h2 {
-  font-size: 29px;
-  margin: 14px 0 20px;
+  margin: 16px 0 12px;
 }
 .contact-inner > p:not(.eyebrow) {
   color: var(--muted);
@@ -426,20 +417,17 @@ dd a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 35px;
+  gap: 12px;
   text-decoration: none;
-  border-bottom: 1px solid #9eaf92;
-  font-size: clamp(18px, 3vw, 29px);
+  border-bottom: 1px solid #879782;
+  font-size: clamp(18px, 2.1vw, 25px);
   letter-spacing: 0.015em;
   line-height: 1.6;
   padding: 17px 0 10px;
-  margin: 3px 0 22px;
-}
-.email-link span {
-  font-size: 24px;
+  margin: 20px 0 24px;
 }
 .contact-inner p.contact-note {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.9;
 }
 .mobile-break {
@@ -451,6 +439,13 @@ dd a {
   align-items: center;
   justify-content: space-between;
   gap: 26px;
+}
+.home-footer {
+  min-height: 112px;
+}
+.home-footer .footer-links,
+.home-footer .copyright {
+  font-size: 11px;
 }
 .footer-brand {
   font-size: 17px;
@@ -537,7 +532,7 @@ dd a {
     padding-top: 100px;
   }
   .hero-copy {
-    padding-bottom: 100px;
+    padding-bottom: 38px;
   }
 }
 @media (max-width: 900px) {
@@ -550,14 +545,11 @@ dd a {
   }
   .hero {
     column-gap: 0;
-    grid-template-columns: 1.25fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     padding-top: 65px;
   }
   .hero h1 {
-    font-size: clamp(30px, 5.1vw, 49px);
-  }
-  .hero-art {
-    height: 330px;
+    font-size: clamp(28px, 4.65vw, 43px);
   }
   .section {
     grid-template-columns: 1fr 3fr;
@@ -569,6 +561,14 @@ dd a {
   .section-label .eyebrow {
     font-size: 9px;
     letter-spacing: 0.1em;
+  }
+  .principles article {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .principles article > div {
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
   .activity-list {
     gap: 26px;
@@ -636,13 +636,13 @@ dd a {
     letter-spacing: 0.12em;
   }
   .hero h1 {
-    font-size: clamp(27px, 8.8vw, 54px);
+    font-size: clamp(27px, 8.4vw, 48px);
     margin: 23px 0 21px;
     line-height: 1.6;
   }
   .hero-description {
-    font-size: 12px;
-    line-height: 2.2;
+    font-size: 14px;
+    line-height: 2;
   }
   .desktop-break {
     display: none;
@@ -656,11 +656,10 @@ dd a {
     gap: 55px;
   }
   .hero-art {
-    height: 200px;
     width: 100%;
     max-width: 340px;
     justify-self: center;
-    margin: 25px 0 16px;
+    margin: 26px 0 20px;
   }
   .hero-bottom {
     font-size: 8px;
@@ -688,7 +687,7 @@ dd a {
     font-size: 26px;
   }
   .prose {
-    font-size: 13px;
+    font-size: 14px;
     margin-top: 24px;
   }
   .business-info {
@@ -703,8 +702,8 @@ dd a {
     display: block;
     font-size: 10px;
   }
-  .activities {
-    padding-block: 56px;
+  .activities > .wrap {
+    padding-block: 62px;
   }
   .section-heading {
     display: block;
@@ -723,7 +722,7 @@ dd a {
     gap: 28px;
   }
   .activity-list article {
-    padding: 19px 0 23px;
+    padding-top: 16px;
   }
   .activity-list h3 {
     font-size: 20px;
@@ -731,14 +730,6 @@ dd a {
   }
   .activity-list h3 br {
     display: none;
-  }
-  .activity-list p {
-    font-size: 12px;
-    padding-right: 25px;
-  }
-  .activity-mark {
-    bottom: 0;
-    font-size: 20px;
   }
   .section-intro {
     font-size: 12px;
@@ -767,22 +758,16 @@ dd a {
     margin-top: 27px;
   }
   .principles article {
-    gap: 17px;
-    padding: 22px 0;
+    padding-block: 18px;
   }
   .principles article > span {
-    flex-basis: 36px;
-    height: 36px;
-    font-size: 21px;
+    font-size: 23px;
   }
   .principles h3 {
     font-size: 16px;
   }
-  .principles p {
-    font-size: 12px;
-  }
   .contact-inner {
-    padding-block: 52px;
+    padding-block: 58px;
   }
   .contact h2 {
     font-size: 26px;
@@ -795,12 +780,6 @@ dd a {
     font-size: clamp(16px, 4.8vw, 25px);
     gap: 15px;
     margin-top: 8px;
-  }
-  .email-link span {
-    font-size: 21px;
-  }
-  .contact-inner p.contact-note {
-    font-size: 10px;
   }
   .site-footer {
     min-height: 160px;
